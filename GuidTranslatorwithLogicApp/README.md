@@ -20,9 +20,13 @@ Here is a typical JSON you might find:
 The app will convert the ```PrincipalId``` and the Azure subscription ID ```40984ee8-6634-40a4-3214-abcf76389376``` to user name and subscription name. Then, it sends an email with the converted info to an operators. These operations make use the Azure ARM and Azure AD, and Outlook connectors. 
 
 
+You should see a similar app in the Logic App Designer. ** Note that the ARM template will create these connectors without valid login information. You will have to edit the connectors and supply the correct credentials. **
 
 ![Image of GUID Translator](https://github.com/ChaiSwaddipong/AzureTemplate/blob/main/GuidTranslatorwithLogicApp/image1.PNG)
 
+The email now contains user and subscription name instead of IDs. This is useful and actionable information for the end user. 
+
+![Image of output](https://github.com/ChaiSwaddipong/AzureTemplate/blob/main/GuidTranslatorwithLogicApp/output.PNG)
 
 More on Logic App Connectors here:
 * https://docs.microsoft.com/en-us/connectors/arm/
