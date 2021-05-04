@@ -24,6 +24,7 @@ You should see a similar app in the Logic App Designer. **Note that the ARM temp
 
 ![Image of GUID Translator](https://github.com/ChaiSwaddipong/AzureTemplate/blob/main/GuidTranslatorwithLogicApp/image1.PNG)
 
+
 The email now contains user and subscription name instead of IDs. This is useful and actionable information for the end user. 
 
 

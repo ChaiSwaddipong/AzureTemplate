@@ -1,0 +1,176 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_guidtranslatorapp_name": {
+            "defaultValue": "guidtranslatorapp",
+            "type": "string"
+        },
+        "connections_arm_1_externalid": {
+            "defaultValue": "/subscriptions/<your subcription id>/resourceGroups/lzrg1/providers/Microsoft.Web/connections/arm-1",
+            "type": "string"
+        },
+        "connections_azuread_externalid": {
+            "defaultValue": "/subscriptions/<your subcription id>/resourceGroups/lzrg1/providers/Microsoft.Web/connections/azuread",
+            "type": "string"
+        },
+        "connections_outlook_externalid": {
+            "defaultValue": "/subscriptions/<your subcription id>/resourceGroups/lzrg1/providers/Microsoft.Web/connections/outlook",
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_guidtranslatorapp_name')]",
+            "location": "southcentralus",
+            "tags": {
+                "myMGtag1": "myMGvalue1"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {
+                                    "properties": {
+                                        "Id": {
+                                            "type": "string"
+                                        },
+                                        "Properties": {
+                                            "properties": {
+                                                "PrincipalId": {
+                                                    "type": "string"
+                                                },
+                                                "PrincipalType": {
+                                                    "type": "string"
+                                                },
+                                                "RoleDefinitionId": {
+                                                    "type": "string"
+                                                },
+                                                "Scope": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Get_user": {
+                            "runAfter": {
+                                "Initialize_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azuread']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/v1.0/users/@{encodeURIComponent(triggerBody()?['Properties']?['PrincipalId'])}"
+                            }
+                        },
+                        "Initialize_variable": {
+                            "runAfter": {},
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "mysubid",
+                                        "type": "string",
+                                        "value": "@{substring(triggerBody()?['Properties']?['Scope'],15,36)}"
+                                    }
+                                ]
+                            }
+                        },
+                        "Read_a_subscription": {
+                            "runAfter": {
+                                "Get_user": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['arm_1']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/subscriptions/@{encodeURIComponent(variables('mysubid'))}",
+                                "queries": {
+                                    "x-ms-api-version": "2016-06-01"
+                                }
+                            }
+                        },
+                        "Send_an_email_(V2)": {
+                            "runAfter": {
+                                "Read_a_subscription": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": {
+                                    "Body": "<p>Hello,<br>\n<br>\n<br>\nThis user was assigned an Azure RBAC role :  @{body('Get_user')?['userPrincipalName']} <br>\nSubscription name affected : &nbsp;@{body('Read_a_subscription')?['displayName']}<br>\n<br>\n<br>\n<br>\n<strong>Powered by Azure Logic Apps</strong></p>",
+                                    "Subject": "Role assignment detected",
+                                    "To": "csadvisor@outlook.com"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['outlook']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/v2/Mail"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "arm_1": {
+                                "connectionId": "[parameters('connections_arm_1_externalid')]",
+                                "connectionName": "arm-1",
+                                "id": "/subscriptions/<your subcription id>/providers/Microsoft.Web/locations/southcentralus/managedApis/arm"
+                            },
+                            "azuread": {
+                                "connectionId": "[parameters('connections_azuread_externalid')]",
+                                "connectionName": "azuread",
+                                "id": "/subscriptions/<your subcription id>/providers/Microsoft.Web/locations/southcentralus/managedApis/azuread"
+                            },
+                            "outlook": {
+                                "connectionId": "[parameters('connections_outlook_externalid')]",
+                                "connectionName": "outlook",
+                                "id": "/subscriptions/<your subcription id>/providers/Microsoft.Web/locations/southcentralus/managedApis/outlook"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
