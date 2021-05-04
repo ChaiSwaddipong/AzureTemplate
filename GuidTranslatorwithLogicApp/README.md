@@ -1,6 +1,7 @@
 # GUID Translator
 
-This app takes a sample JSON , typically a result of Azure Alert from Log Analytics, and converts the GUID information in the alert to something that is bit more user friendly like email, subscription name (as opposed to id), etc.
+This Azure Logic Apps takes a sample JSON as input and converts the GUID information in it to something that is bit more user friendly like email, subscription name (as opposed to id), etc.  It can also be configured to respond to an Azure Alert, triggered by Log Analytics query.  More on that here https://docs.microsoft.com/en-us/azure/azure-monitor/alerts/tutorial-response.
+
 
 Here is a typical JSON you might find:
 
