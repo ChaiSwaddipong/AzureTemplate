@@ -26,7 +26,10 @@ You should see a similar app in the Logic App Designer. **Note that the ARM temp
 
 The email now contains user and subscription name instead of IDs. This is useful and actionable information for the end user. 
 
+
 ![Image of output](https://github.com/ChaiSwaddipong/AzureTemplate/blob/main/GuidTranslatorwithLogicApp/output.PNG)
+
+
 
 More on Logic App Connectors here:
 * https://docs.microsoft.com/en-us/connectors/arm/
