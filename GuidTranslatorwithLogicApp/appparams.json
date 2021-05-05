@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_guidtranslatorapp_name": {
+            "value": null
+        },
+        "connections_arm_1_externalid": {
+            "value": null
+        },
+        "connections_azuread_externalid": {
+            "value": null
+        },
+        "connections_outlook_externalid": {
+            "value": null
+        }
+    }
+}

@@ -7,15 +7,15 @@
             "type": "string"
         },
         "connections_arm_1_externalid": {
-            "defaultValue": "/subscriptions/<your subcription id>/resourceGroups/lzrg1/providers/Microsoft.Web/connections/arm-1",
+            "defaultValue": "<Replace with properties of ARM connector from prereq>",
             "type": "string"
         },
         "connections_azuread_externalid": {
-            "defaultValue": "/subscriptions/<your subcription id>/resourceGroups/lzrg1/providers/Microsoft.Web/connections/azuread",
+            "defaultValue": "<Replace with properties of Azure AD connector from prereq>",
             "type": "string"
         },
         "connections_outlook_externalid": {
-            "defaultValue": "/subscriptions/<your subcription id>/resourceGroups/lzrg1/providers/Microsoft.Web/connections/outlook",
+            "defaultValue": "<Replace with properties of Outlook connector from prereq>",
             "type": "string"
         }
     },
@@ -27,7 +27,7 @@
             "name": "[parameters('workflows_guidtranslatorapp_name')]",
             "location": "southcentralus",
             "tags": {
-                "myMGtag1": "myMGvalue1"
+                "Application": "GUIDTranlator"
             },
             "properties": {
                 "state": "Enabled",
@@ -135,7 +135,7 @@
                                 "body": {
                                     "Body": "<p>Hello,<br>\n<br>\n<br>\nThis user was assigned an Azure RBAC role :  @{body('Get_user')?['userPrincipalName']} <br>\nSubscription name affected : &nbsp;@{body('Read_a_subscription')?['displayName']}<br>\n<br>\n<br>\n<br>\n<strong>Powered by Azure Logic Apps</strong></p>",
                                     "Subject": "Role assignment detected",
-                                    "To": "csadvisor@outlook.com"
+                                    "To": "enduser@company.com"
                                 },
                                 "host": {
                                     "connection": {
@@ -155,17 +155,17 @@
                             "arm_1": {
                                 "connectionId": "[parameters('connections_arm_1_externalid')]",
                                 "connectionName": "arm-1",
-                                "id": "/subscriptions/<your subcription id>/providers/Microsoft.Web/locations/southcentralus/managedApis/arm"
+                                "id": "[concat('subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/arm')]"
                             },
                             "azuread": {
                                 "connectionId": "[parameters('connections_azuread_externalid')]",
                                 "connectionName": "azuread",
-                                "id": "/subscriptions/<your subcription id>/providers/Microsoft.Web/locations/southcentralus/managedApis/azuread"
+                                "id": "[concat('subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/azuread')]"
                             },
                             "outlook": {
                                 "connectionId": "[parameters('connections_outlook_externalid')]",
                                 "connectionName": "outlook",
-                                "id": "/subscriptions/<your subcription id>/providers/Microsoft.Web/locations/southcentralus/managedApis/outlook"
+                                "id": "[concat('subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/outlook')]"
                             }
                         }
                     }
