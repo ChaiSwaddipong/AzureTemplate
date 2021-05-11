@@ -11,7 +11,7 @@
             "type": "string"
         },
         "connections_arm_1_name": {
-            "defaultValue": "arm-1",
+            "defaultValue": "arm",
             "type": "string"
         }
     },
