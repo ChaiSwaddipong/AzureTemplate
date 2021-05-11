@@ -25,7 +25,7 @@
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
             "name": "[parameters('workflows_guidtranslatorapp_name')]",
-            "location": "southcentralus",
+            "location": "[resourceGroup().location]",
             "tags": {
                 "Application": "GUIDTranlator"
             },
