@@ -7,10 +7,10 @@
             "value": "outlook"
         },
         "connections_azuread_name": {
-            "value": null
+            "value": "azuread"
         },
         "connections_arm_1_name": {
-            "value": null
+            "value": "arm"
         }
     }
 }
