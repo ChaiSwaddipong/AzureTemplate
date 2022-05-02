@@ -1,0 +1,43 @@
+{
+  "properties": {
+    "displayName": "Storage accounts should have internet routing",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Making sure that Internet Routing is enabled.",
+    "metadata": {
+   
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the audit policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Deny",
+          "Disabled"
+        ],
+        "defaultValue": "Audit"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "field": "Microsoft.Storage/storageAccounts/routingPreference.routingChoice",
+            "notEquals": "InternetRouting"
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]"
+      }
+    }
+  }
+}
