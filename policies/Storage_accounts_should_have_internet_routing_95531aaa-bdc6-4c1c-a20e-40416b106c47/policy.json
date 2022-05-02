@@ -43,8 +43,5 @@
     "effect": "[parameters('effect')]"
    }
   }
- },
- "id": "/subscriptions/e7c53030-8771-44a0-a955-447b1df2f04e/providers/Microsoft.Authorization/policyDefinitions/95531aaa-bdc6-4c1c-a20e-40416b106c47",
- "type": "Microsoft.Authorization/policyDefinitions",
- "name": "95531aaa-bdc6-4c1c-a20e-40416b106c47"
+ }
 }
